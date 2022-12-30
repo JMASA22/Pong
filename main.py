@@ -20,6 +20,8 @@ pilota.vx = 4
 
 game_over = False
 
+pantalla_principal.fill((0,130,95)) #pintar pantalla
+
 while not game_over:
     # imprimir els milisegosnq triguen els fotogrames actualment
     vt = cronometre.tick(300) # variable per controlar velicitat entre fotogrames
@@ -29,8 +31,6 @@ while not game_over:
         #print(eventos)
         if eventos.type == pg.QUIT:
             game_over = True
-
-    pantalla_principal.fill((0,130,95)) #pintar pantalla
 
     #pilota.comprovar_xoc (raqueta1, raqueta2)
     pilota.comprovar_xoc_V2 (raqueta1, raqueta2)
