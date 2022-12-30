@@ -32,13 +32,21 @@ class Pilota:
         #la pilota desapareix uns pocs segons quan fa gol (límit de y)
         if self.pos_x >= xmax+self.radio*10: #límit dr
             self.contadorEsq += 1
+            #reapareixi pilota a centre després de gol
+            self.pos_x = xmax//2
+            self.pos_y = ymax//2
+            #pq reboti
             self.vx *= -1 
-            self.yx *= -1 
-
+            self.vy *= -1 
+            
         if self.pos_x < 0+self.radio*10: #límit esq
             self.contadorDrt += 1
+            #reapareixi pilota a centre després de gol
+            self.pos_x = xmax//2
+            self.pos_y = ymax//2
+            #pq reboti
             self.vx *= -1 
-            self.yx *= -1 
+            self.vy *= -1 
 
     def marcador (self,pantalla_principal):
         marcadorEsq = self.font.render("jugador 1"+str(self.contadorDrt), 0, (255,255,0))
@@ -46,32 +54,42 @@ class Pilota:
 
         pantalla_principal.blit(marcadorDrt,(200,50))
         pantalla_principal.blit(marcadorEsq,(600,50))
-
-    def posX (self):
-        return self.pos_x+self.radio
-    def posY (self):
-        return self.pos_y+self.radio
-   
+    
+    @property #pq la funció actui com a variable 
     def Esq (self):
-        if self.pos_x < 400:
-            return True
-        return False
-   
+        return self.pos_x - self.radio
+    @property
     def Drt (self):
-        if self.pos_x > 400:
-            return True
-        return False
-
+        return self.pos_x + self.radio
+    @property
     def Up (self):
-        if self.pos_y < 300:
-            return True
-        return False  
-
+        return self.pos_y - self.radio
+    @property
     def Down (self):
-        if self.pos_y > 300:
-            return True
-        return False  
+        return self.pos_y + self.radio
 
+    def comprovar_xoc (self,r1, r2): #lògica de xoc
+        if self.Drt >= r2.Esq and \
+        self.Esq <= r2.Drt and \
+        self.Down >= r2.Up and \
+        self.Up <= r2.Down:
+            self.vx *= -1
+
+        if self.Drt >= r1.Esq and \
+        self.Esq <= r1.Drt and \
+        self.Down >= r1.Up and \
+        self.Up <= r1.Down:
+            self.vx *= -1
+
+    def comprovar_xoc_V2 (self,*raquetes): #lògica de xoc V2 / * significa q ho imprimirà com una array d'objectes
+       for r in raquetes:
+            if self.Drt >= r.Esq and \
+               self.Esq <= r.Drt and \
+               self.Down >= r.Up and \
+               self.Up <= r.Down:
+                    self.vx *= -1
+                    return #acabar sentencia "for" (tmb es pot fer amb break)
+ 
 class Raqueta:
     def __init__(self, pos_x, pos_y, w=20, h=100, color=(255,255,255), vx=1, vy=1):
         self.pos_x = pos_x
@@ -92,6 +110,19 @@ class Raqueta:
             self.pos_y -= 1
         if estat_tecles [tecla_down] == True and self.pos_y < (ymax-self.h//2):
             self.pos_y += 1
+
+    @property
+    def Up (self):
+        return self.pos_y - self.h//2
+    @property
+    def Down (self):
+        return self.pos_y + self.h//2
+    @property  
+    def Esq (self):
+        return self.pos_x - self.w//2
+    @property  
+    def Drt (self):
+        return self.pos_x + self.w//2
 
 """       
         if estat_tecles [tecla_up] == True:

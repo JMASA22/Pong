@@ -15,14 +15,14 @@ pilota = Pilota (400,300)
 raqueta1 = Raqueta (10,300)
 raqueta2 = Raqueta (790,300)
 
-raqueta1.vy = 5
+raqueta1.vy = 6
 pilota.vx = 4
 
 game_over = False
 
 while not game_over:
     # imprimir els milisegosnq triguen els fotogrames actualment
-    vt = cronometre.tick(500) # variable per controlar velicitat entre fotogrames
+    vt = cronometre.tick(300) # variable per controlar velicitat entre fotogrames
     # print (vt)
 
     for eventos in pg.event.get():
@@ -31,8 +31,11 @@ while not game_over:
             game_over = True
 
     pantalla_principal.fill((0,130,95)) #pintar pantalla
-    pilota.marcador(pantalla_principal)
 
+    #pilota.comprovar_xoc (raqueta1, raqueta2)
+    pilota.comprovar_xoc_V2 (raqueta1, raqueta2)
+
+    pilota.marcador(pantalla_principal)
     pg.draw.line(pantalla_principal, (255,255,255), (400,0), (400,600), width=2) #pintar línia mig
 
     pilota.dibuixar (pantalla_principal)
